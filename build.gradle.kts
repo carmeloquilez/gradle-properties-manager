@@ -11,16 +11,20 @@ repositories {
     mavenCentral()
 }
 
-dependencies {
-    testImplementation(kotlin("test"))
+kotlin {
+    jvmToolchain(8)
 }
 
-tasks.test {
+val functionalTest = sourceSets.create("functionalTest")
+val functionalTestTask = tasks.register<Test>("functionalTest") {
+    group = "verification"
+    testClassesDirs = functionalTest.output.classesDirs
+    classpath = functionalTest.runtimeClasspath
     useJUnitPlatform()
 }
 
-kotlin {
-    jvmToolchain(8)
+tasks.check {
+    dependsOn(functionalTestTask)
 }
 
 gradlePlugin {
@@ -30,4 +34,19 @@ gradlePlugin {
             implementationClass = "com.cquilez.PropertyManagerPlugin"
         }
     }
+    testSourceSets(functionalTest)
+}
+
+dependencies {
+    testImplementation("org.junit.jupiter:junit-jupiter:5.7.1")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+    testImplementation(gradleTestKit())
+    "functionalTestImplementation"("org.junit.jupiter:junit-jupiter:5.7.1")
+    "functionalTestRuntimeOnly"("org.junit.platform:junit-platform-launcher")
+    "functionalTestRuntimeOnly"(gradleTestKit())
+    "functionalTestImplementation"("org.hamcrest:hamcrest:2.1")
+}
+
+tasks.test {
+    useJUnitPlatform()
 }
