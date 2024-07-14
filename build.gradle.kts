@@ -44,7 +44,7 @@ dependencies {
     "functionalTestImplementation"("org.junit.jupiter:junit-jupiter:5.7.1")
     "functionalTestRuntimeOnly"("org.junit.platform:junit-platform-launcher")
     "functionalTestRuntimeOnly"(gradleTestKit())
-    "functionalTestImplementation"("org.hamcrest:hamcrest:2.1")
+    "functionalTestImplementation"("org.hamcrest:hamcrest:2.2")
 }
 
 tasks.test {
