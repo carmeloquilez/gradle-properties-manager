@@ -1,0 +1,123 @@
+name: Build
+run-name: Build and test
+# Triggered when pushing to main, develop or in a pull request
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+
+      # Check out current repository
+      - name: Fetch Sources
+        uses: actions/checkout@v4
+
+      # Validate wrapper
+      - name: Gradle Wrapper Validation
+        uses: gradle/actions/wrapper-validation@v3
+
+      # Setup Java and Gradle
+      - name: Setup Java and Gradle
+        uses: ./.github/actions/setup-java-gradle
+
+      # Build plugin
+      - name: Build plugin without running tests
+        run: ./gradlew build -x check
+
+  # Run tests and upload a code coverage report
+  test:
+    name: Test
+    needs: [ build ]
+    runs-on: ubuntu-latest
+    steps:
+
+      # Check out current repository
+      - name: Fetch Sources
+        uses: actions/checkout@v4
+
+      # Setup Java and Gradle
+      - name: Setup Java and Gradle
+        uses: ./.github/actions/setup-java-gradle
+
+      # Run unit tests
+      - name: Run Unit Tests
+        run: ./gradlew test
+
+      # Collect Tests Result of failed tests
+      - name: Collect Tests Result
+        if: ${{ failure() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: tests-result
+          path: ${{ github.workspace }}/build/reports/tests
+
+      # Upload the Kover report to CodeCov
+      - name: Upload Code Coverage Report
+        uses: codecov/codecov-action@v4
+        with:
+          files: ${{ github.workspace }}/build/reports/kover/report.xml
+
+  # Run tests and upload a code coverage report
+  functionalTest:
+    name: Functional Test
+    needs: [ build ]
+    runs-on: ubuntu-latest
+    steps:
+
+      # Check out current repository
+      - name: Fetch Sources
+        uses: actions/checkout@v4
+
+      # Setup Java and Gradle
+      - name: Setup Java and Gradle
+        uses: ./.github/actions/setup-java-gradle
+
+      # Run functional tests
+      - name: Run Functional Tests
+        run: ./gradlew functionalTest
+
+      # Collect Tests Result of failed tests
+      - name: Collect Tests Result
+        if: ${{ failure() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: functionalTests-result
+          path: ${{ github.workspace }}/build/reports/tests
+
+  # Run Qodana inspections and provide report
+  inspectCode:
+    name: Inspect code
+    needs: [ build ]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      checks: write
+      pull-requests: write
+    steps:
+      # Free GitHub Actions Environment Disk Space
+      - name: Maximize Build Space
+        uses: jlumbroso/free-disk-space@main
+        with:
+          tool-cache: false
+          large-packages: false
+
+      # Check out current repository
+      - name: Fetch Sources
+        uses: actions/checkout@v4
+
+      # Set up Java environment for the next steps
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: zulu
+          java-version: 8
+
+      # Run Qodana inspections
+      - name: Qodana - Code Inspection
+        uses: JetBrains/qodana-action@v2023.2.8
+        with:
+          cache-default-branch-only: true

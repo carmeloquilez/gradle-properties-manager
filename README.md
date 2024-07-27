@@ -1,1 +1,5 @@
-# gradle-properties-manager
+# properties-manager
+
+Plugin to load and bind properties.
+
+## Examples:

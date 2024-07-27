@@ -4,30 +4,50 @@ plugins {
     id("com.gradle.plugin-publish") version "1.2.1"
 }
 
-group = "com.cquilez"
+group = "com.cquilezg"
 version = "1.0-SNAPSHOT"
 
 repositories {
     mavenCentral()
 }
 
-dependencies {
-    testImplementation(kotlin("test"))
+kotlin {
+    jvmToolchain(8)
+}
+
+val functionalTest = sourceSets.create("functionalTest")
+val functionalTestTask = tasks.register<Test>("functionalTest") {
+    group = "verification"
+    description = "Functional tests"
+    testClassesDirs = functionalTest.output.classesDirs
+    classpath = functionalTest.runtimeClasspath
+    useJUnitPlatform()
 }
 
 tasks.test {
     useJUnitPlatform()
 }
 
-kotlin {
-    jvmToolchain(8)
+tasks.check {
+    dependsOn(functionalTestTask)
+}
+
+dependencies {
+    testImplementation(libs.junitJupiter)
+    testImplementation(gradleTestKit())
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+    "functionalTestImplementation"(libs.junitJupiter)
+    "functionalTestRuntimeOnly"("org.junit.platform:junit-platform-launcher")
+    "functionalTestRuntimeOnly"(gradleTestKit())
+    "functionalTestImplementation"(libs.hamcrest)
 }
 
 gradlePlugin {
     plugins {
-        create("gradle-properties-manager") {
-            id = "com.cquilez.gradle-properties-manager"
-            implementationClass = "com.cquilez.PropertyManagerPlugin"
+        create("properties-manager") {
+            id = "com.cquilezg.properties-manager"
+            implementationClass = "com.cquilezg.PropertyManagerPlugin"
         }
     }
+    testSourceSets(functionalTest)
 }
