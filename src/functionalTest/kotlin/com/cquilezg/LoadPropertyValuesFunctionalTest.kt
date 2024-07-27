@@ -30,7 +30,7 @@ class LoadPropertyValuesFunctionalTest {
         buildFile = File(testProjectDir, "build.gradle")
         val buildFileContent = """
             plugins {
-                id 'com.cquilezg.gradle-properties-manager'
+                id 'com.cquilezg.properties-manager'
             }
             task testStringProperty {
                 doLast {
