@@ -22,7 +22,7 @@ jobs:
 
       # Setup Java and Gradle
       - name: Setup Java and Gradle
-        uses: ./.github/actions/setup-java-gradle/action.yml
+        uses: ./.github/actions/setup-java-gradle
 
       # Build plugin
       - name: Build plugin without running tests
@@ -41,7 +41,7 @@ jobs:
 
       # Setup Java and Gradle
       - name: Setup Java and Gradle
-        uses: ./.github/actions/setup-java-gradle/action.yml
+        uses: ./.github/actions/setup-java-gradle
 
       # Run unit tests
       - name: Run Unit Tests
@@ -74,7 +74,7 @@ jobs:
 
       # Setup Java and Gradle
       - name: Setup Java and Gradle
-        uses: ./.github/actions/setup-java-gradle/action.yml
+        uses: ./.github/actions/setup-java-gradle
 
       # Run functional tests
       - name: Run Functional Tests
