@@ -15,7 +15,7 @@ import java.io.BufferedWriter
 import java.io.File
 import java.io.FileWriter
 
-class GradleLoadPropertyValuesFunctionalTest {
+class GroovyLoadPropertyValuesFunctionalTest {
     @TempDir
     lateinit var testProjectDir: File
     private lateinit var settingsFile: File
