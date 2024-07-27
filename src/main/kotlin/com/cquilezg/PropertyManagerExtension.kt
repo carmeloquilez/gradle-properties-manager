@@ -1,4 +1,4 @@
-package com.cquilez
+package com.cquilezg
 
 import org.gradle.api.Project
 import org.gradle.api.provider.HasMultipleValues

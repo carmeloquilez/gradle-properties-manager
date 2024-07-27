@@ -1,4 +1,4 @@
-package com.cquilez
+package com.cquilezg
 
 import org.gradle.testkit.runner.GradleRunner
 import org.gradle.testkit.runner.TaskOutcome
@@ -6,6 +6,7 @@ import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.containsString
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.io.TempDir
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
@@ -20,6 +21,7 @@ class LoadPropertyValuesFunctionalTest {
     private lateinit var settingsFile: File
     private lateinit var buildFile: File
     private lateinit var gradleProperties: File
+    private val taskName = ":testStringProperty"
 
     @BeforeEach
     fun setup() {
@@ -28,7 +30,7 @@ class LoadPropertyValuesFunctionalTest {
         buildFile = File(testProjectDir, "build.gradle")
         val buildFileContent = """
             plugins {
-                id 'com.cquilez.gradle-properties-manager'
+                id 'com.cquilezg.gradle-properties-manager'
             }
             task testStringProperty {
                 doLast {
@@ -41,7 +43,8 @@ class LoadPropertyValuesFunctionalTest {
 
     @ParameterizedTest
     @MethodSource("gradleVersions")
-    fun `no property loaded as there is no gradle properties and no project property written`(gradleVersion: String) {
+    @DisplayName("If no gradle.properties present and no project properties, no property is loaded")
+    fun noPropertyLoadedAsThereIsNoGradlePropertiesAndNoProjectPropertyWritten(gradleVersion: String) {
         val result = GradleRunner.create()
             .withGradleVersion(gradleVersion)
             .withProjectDir(testProjectDir)
@@ -50,12 +53,13 @@ class LoadPropertyValuesFunctionalTest {
             .build()
 
         assertThat(result.output, containsString("Property value: null"))
-        Assertions.assertEquals(TaskOutcome.SUCCESS, result.task(":testStringProperty")!!.outcome)
+        Assertions.assertEquals(TaskOutcome.SUCCESS, result.task(taskName)!!.outcome)
     }
 
     @ParameterizedTest
     @MethodSource("gradleVersions")
-    fun `load string property from gradle properties file`(gradleVersion: String) {
+    @DisplayName("If property is found at gradle.properties, loads it")
+    fun loadStringPropertyFromGradlePropertiesFile(gradleVersion: String) {
         val gradlePropertiesContent = """
             my.string.property="Hello world!"
         """.trimIndent()
@@ -70,12 +74,13 @@ class LoadPropertyValuesFunctionalTest {
             .build()
 
         assertThat(result.output, containsString("Hello world!"))
-        Assertions.assertEquals(TaskOutcome.SUCCESS, result.task(":testStringProperty")!!.outcome)
+        Assertions.assertEquals(TaskOutcome.SUCCESS, result.task(taskName)!!.outcome)
     }
 
     @ParameterizedTest
     @MethodSource("gradleVersions")
-    fun `load string property from project properties`(gradleVersion: String) {
+    @DisplayName("If project property is provided, uses it")
+    fun loadStringPropertyFromProjectProperties(gradleVersion: String) {
         val result = GradleRunner.create()
             .withGradleVersion(gradleVersion)
             .withProjectDir(testProjectDir)
@@ -84,7 +89,7 @@ class LoadPropertyValuesFunctionalTest {
             .build()
 
         assertThat(result.output, containsString("HelloWorld!"))
-        Assertions.assertEquals(TaskOutcome.SUCCESS, result.task(":testStringProperty")!!.outcome)
+        Assertions.assertEquals(TaskOutcome.SUCCESS, result.task(taskName)!!.outcome)
     }
 
     private fun writeFile(destination: File, content: String) {

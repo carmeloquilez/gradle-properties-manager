@@ -4,7 +4,7 @@ plugins {
     id("com.gradle.plugin-publish") version "1.2.1"
 }
 
-group = "com.cquilez"
+group = "com.cquilezg"
 version = "1.0-SNAPSHOT"
 
 repositories {
@@ -45,8 +45,8 @@ dependencies {
 gradlePlugin {
     plugins {
         create("properties-manager") {
-            id = "com.cquilez.properties-manager"
-            implementationClass = "com.cquilez.PropertyManagerPlugin"
+            id = "com.cquilezg.properties-manager"
+            implementationClass = "com.cquilezg.PropertyManagerPlugin"
         }
     }
     testSourceSets(functionalTest)
