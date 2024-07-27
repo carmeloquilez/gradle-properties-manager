@@ -113,8 +113,8 @@ jobs:
       - name: Setup Java
         uses: actions/setup-java@v4
         with:
-          distribution: $JAVA_DISTRIBUTION
-          java-version: $JAVA_VERSION
+          distribution: zulu
+          java-version: 8
 
       # Run Qodana inspections
       - name: Qodana - Code Inspection
