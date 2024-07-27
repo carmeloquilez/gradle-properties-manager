@@ -127,7 +127,7 @@ open class PropertyManagerExtension {
     fun loadBooleanProperty(project: Project, propertyName: String): Boolean? {
         val propertyValue = project.properties[propertyName]
         if (propertyValue is String) {
-            return propertyValue.equals("true", true)
+            return propertyValue.trim().equals("true", true)
         }
         return null
     }
