@@ -18,8 +18,13 @@ kotlin {
 val functionalTest = sourceSets.create("functionalTest")
 val functionalTestTask = tasks.register<Test>("functionalTest") {
     group = "verification"
+    description = "Functional tests"
     testClassesDirs = functionalTest.output.classesDirs
     classpath = functionalTest.runtimeClasspath
+    useJUnitPlatform()
+}
+
+tasks.test {
     useJUnitPlatform()
 }
 
@@ -27,26 +32,22 @@ tasks.check {
     dependsOn(functionalTestTask)
 }
 
+dependencies {
+    testImplementation(libs.junitJupiter)
+    testImplementation(gradleTestKit())
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+    "functionalTestImplementation"(libs.junitJupiter)
+    "functionalTestRuntimeOnly"("org.junit.platform:junit-platform-launcher")
+    "functionalTestRuntimeOnly"(gradleTestKit())
+    "functionalTestImplementation"(libs.hamcrest)
+}
+
 gradlePlugin {
     plugins {
-        create("gradle-properties-manager") {
-            id = "com.cquilez.gradle-properties-manager"
+        create("properties-manager") {
+            id = "com.cquilez.properties-manager"
             implementationClass = "com.cquilez.PropertyManagerPlugin"
         }
     }
     testSourceSets(functionalTest)
-}
-
-dependencies {
-    testImplementation("org.junit.jupiter:junit-jupiter:5.7.1")
-    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
-    testImplementation(gradleTestKit())
-    "functionalTestImplementation"("org.junit.jupiter:junit-jupiter:5.7.1")
-    "functionalTestRuntimeOnly"("org.junit.platform:junit-platform-launcher")
-    "functionalTestRuntimeOnly"(gradleTestKit())
-    "functionalTestImplementation"("org.hamcrest:hamcrest:2.2")
-}
-
-tasks.test {
-    useJUnitPlatform()
 }
