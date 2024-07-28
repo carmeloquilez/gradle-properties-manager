@@ -57,6 +57,6 @@ gradlePlugin {
         }
     }
     website = "https://github.com/cquilezg/properties-manager"
-    vcsUrl = "git@github.com:cquilezg/properties-manager.git"
+    vcsUrl = "https://github.com/cquilezg/properties-manager.git"
     testSourceSets(functionalTest)
 }
