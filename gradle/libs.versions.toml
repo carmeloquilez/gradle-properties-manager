@@ -1,0 +1,7 @@
+[versions]
+junitJupiter = "5.7.1"
+hamcrest = "2.2"
+
+[libraries]
+junitJupiter = { group = "org.junit.jupiter", name = "junit-jupiter", version.ref = "junitJupiter" }
+hamcrest = { group = "org.hamcrest", name = "hamcrest", version.ref = "hamcrest" }
