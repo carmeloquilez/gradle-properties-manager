@@ -2,10 +2,11 @@ plugins {
     kotlin("jvm") version "1.9.23"
     `java-gradle-plugin`
     id("com.gradle.plugin-publish") version "1.2.1"
+    signing
 }
 
 group = "com.cquilezg"
-version = "1.0-SNAPSHOT"
+version = "1.0"
 
 repositories {
     mavenCentral()
@@ -47,7 +48,15 @@ gradlePlugin {
         create("properties-manager") {
             id = "com.cquilezg.properties-manager"
             implementationClass = "com.cquilezg.PropertyManagerPlugin"
+            displayName = "Properties manager"
+            description = """
+                Load properties from command-line (using project properties: -P option) and from gradle.properties, handling primary property types
+                like strings, numbers, booleans for flexible and dynamic configuration management
+            """.trimIndent()
+            tags = listOf("properties", "configuration", "project properties")
         }
     }
+    website = "https://github.com/cquilezg/properties-manager"
+    vcsUrl = "https://github.com/cquilezg/properties-manager.git"
     testSourceSets(functionalTest)
 }
