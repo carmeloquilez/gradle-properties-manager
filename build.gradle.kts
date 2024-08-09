@@ -5,7 +5,7 @@ plugins {
     signing
 }
 
-group = "com.cquilezg"
+group = "io.github.cquilezg"
 version = "1.0"
 
 repositories {
