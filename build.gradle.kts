@@ -46,8 +46,8 @@ dependencies {
 gradlePlugin {
     plugins {
         create("properties-manager") {
-            id = "com.cquilezg.properties-manager"
-            implementationClass = "com.cquilezg.PropertyManagerPlugin"
+            id = "io.github.cquilezg.properties-manager"
+            implementationClass = "io.github.cquilezg.PropertyManagerPlugin"
             displayName = "Properties manager"
             description = """
                 Load properties from command-line (using project properties: -P option) and from gradle.properties, handling primary property types

@@ -1,4 +1,4 @@
-package com.cquilezg
+package io.github.cquilezg
 
 import org.gradle.api.Plugin
 import org.gradle.api.Project

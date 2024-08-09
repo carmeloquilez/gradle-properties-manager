@@ -1,4 +1,4 @@
-package com.cquilezg
+package io.github.cquilezg
 
 import org.gradle.testkit.runner.GradleRunner
 import org.gradle.testkit.runner.TaskOutcome
@@ -33,7 +33,7 @@ class GroovyLoadPropertyValuesFunctionalTest {
             buildFile = File(testProjectDir, "build.gradle")
             val buildFileContent = """
             plugins {
-                id 'com.cquilezg.properties-manager'
+                id 'io.github.cquilezg.properties-manager'
             }
             task $taskName {
                 doLast {
@@ -128,7 +128,7 @@ class GroovyLoadPropertyValuesFunctionalTest {
             buildFile = File(testProjectDir, "build.gradle")
             val buildFileContent = """
             plugins {
-                id 'com.cquilezg.properties-manager'
+                id 'io.github.cquilezg.properties-manager'
             }
             task $taskName {
                 doLast {

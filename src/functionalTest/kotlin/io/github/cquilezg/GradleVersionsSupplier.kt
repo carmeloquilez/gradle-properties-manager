@@ -1,10 +1,10 @@
-package com.cquilezg
+package io.github.cquilezg
 
 import org.junit.jupiter.params.provider.Arguments
 
 object GradleVersionsSupplier {
 
-    const val METHOD_REFERENCE = "com.cquilezg.GradleVersionsSupplier#get"
+    const val METHOD_REFERENCE = "io.github.cquilezg.GradleVersionsSupplier#get"
     @JvmStatic
     fun get() = listOf(
         Arguments.of("5.6.4"),
